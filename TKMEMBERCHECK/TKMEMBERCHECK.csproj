@@ -67,6 +67,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FrmMember.resx">
+      <DependentUpon>FrmMember.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmMemberCheck.resx">
       <DependentUpon>FrmMemberCheck.cs</DependentUpon>
     </EmbeddedResource>
