@@ -16,7 +16,8 @@ namespace TKMEMBERCHECK
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FrmParent());
+            //Application.Run(new FrmParent());
+            Application.Run(new FrmLogin());
         }
     }
 }
