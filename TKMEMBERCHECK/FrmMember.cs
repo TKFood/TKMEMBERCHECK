@@ -36,6 +36,8 @@ namespace TKMEMBERCHECK
             public string Address { set; get; }
             public string Sex { set; get; }
             public string Birthday { set; get; }
+            public string NewCardID { set; get; }
+            public string NewLevel { set; get; }
         }
 
         List<Member> list_Member = new List<Member>();
