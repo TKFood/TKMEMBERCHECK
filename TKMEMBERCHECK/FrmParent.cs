@@ -17,10 +17,17 @@ namespace TKMEMBERCHECK
         SqlConnection conn;
         MenuStrip MnuStrip;
         ToolStripMenuItem MnuStripItem;
+        string UserName;
 
         public FrmParent()
         {
             InitializeComponent();
+        }
+
+        public FrmParent(string txt_UserName)
+        {
+            InitializeComponent();
+            UserName = txt_UserName;
         }
 
         //private void InitializeComponent()
@@ -61,8 +68,10 @@ namespace TKMEMBERCHECK
 
         public void SubMenu(ToolStripMenuItem mnu, string submenu)
         {
-            String Seqchild = "SELECT FRM_NAME FROM MNU_SUBMENU WHERE MENUPARVAL='" + submenu + "'";
-            SqlDataAdapter dachildmnu = new SqlDataAdapter(Seqchild, conn);
+            StringBuilder Seqchild=new StringBuilder();
+            Seqchild.AppendFormat("SELECT FRM_NAME FROM MNU_SUBMENU ,MNU_SUBMENULogin WHERE MNU_SUBMENU.FRM_CODE=MNU_SUBMENULogin.FRM_CODE AND  MNU_SUBMENULogin.UserName='{0}' AND MENUPARVAL='{1}'",UserName.ToString(), submenu.ToString());
+            //Seqchild.AppendFormat( "SELECT FRM_NAME FROM MNU_SUBMENU ,MNU_SUBMENULogin WHERE MNU_SUBMENU.FRM_CODE=MNU_SUBMENULogin.FRM_CODE AND  MNU_SUBMENULogin.UserName='1' AND MENUPARVAL='1'");
+            SqlDataAdapter dachildmnu = new SqlDataAdapter(Seqchild.ToString(), conn);
             DataTable dtchild = new DataTable();
             dachildmnu.Fill(dtchild);
 

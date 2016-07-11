@@ -56,7 +56,7 @@ namespace TKMEMBERCHECK
                 {
                     //MessageBox.Show("登入成功!");
                     
-                    FrmParent fm = new FrmParent();
+                    FrmParent fm = new FrmParent(txt_UserName.Text.ToString());
                     fm.Show();
                     this.Hide();
                 }
