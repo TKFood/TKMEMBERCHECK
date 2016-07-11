@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace TKMEMBERCHECK
 {
-    public partial class Form1 : Form
+    public partial class FrmMember : Form
     {
-        public Form1()
+        public FrmMember()
         {
             InitializeComponent();
         }

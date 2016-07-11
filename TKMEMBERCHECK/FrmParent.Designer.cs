@@ -1,6 +1,6 @@
 ﻿namespace TKMEMBERCHECK
 {
-    partial class Form1
+    partial class FrmParent
     {
         /// <summary>
         /// 設計工具所需的變數。
@@ -25,12 +25,21 @@
         /// <summary>
         /// 此為設計工具支援所需的方法 - 請勿使用程式碼編輯器修改
         /// 這個方法的內容。
-        /// </summary>
+         //</summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // FrmParent
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Name = "FrmParent";
+            this.Text = "FrmParent";
+            this.Load += new System.EventHandler(this.FrmParent_Load);
+            this.ResumeLayout(false);
+
         }
 
         #endregion
