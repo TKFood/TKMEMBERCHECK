@@ -46,11 +46,9 @@ namespace TKMEMBERCHECK
 
         List<Member> list_Member = new List<Member>();
 
+
+
         #region FUNTION
-
-        #endregion
-
-        #region SERACH
         public void Search()
         {
             textBox8.Clear();
@@ -216,6 +214,80 @@ namespace TKMEMBERCHECK
 
         }
 
+        public void MemberAdd()
+        {
+            try
+            {
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                sqlConn.Close();
+                sqlConn.Open();
+                tran = sqlConn.BeginTransaction();
+
+                sbSql.Clear();
+                //sbSql.Append("UPDATE Member SET Cname='009999',Mobile1='009999',Telphone='',Email='',Address='',Sex='',Birthday='' WHERE ID='009999'");
+
+                sbSql.AppendFormat("  INSERT  INTO Member (ID, Cname, Mobile1, Telphone, Email, Address, Sex, Birthday, IsUpdate,OldCardID,OldLevel) VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}') ", list_Member[0].ID.ToString(), list_Member[0].Cname.ToString(), list_Member[0].Mobile1.ToString(), list_Member[0].Telphone.ToString(), list_Member[0].Email.ToString(), list_Member[0].Address.ToString(), list_Member[0].Sex.ToString(), list_Member[0].Birthday.ToString(), list_Member[0].IsUpdate.ToString(), list_Member[0].ID.ToString(), "銀卡");
+                //sbSql.AppendFormat("  UPDATE Member SET Cname='{1}',Mobile1='{2}' WHERE ID='{0}' ", list_Member[0].ID.ToString(), list_Member[0].Cname.ToString(), list_Member[0].Mobile1.ToString());
+
+                cmd.Connection = sqlConn;
+                cmd.CommandTimeout = 60;
+                cmd.CommandText = sbSql.ToString();
+                cmd.Transaction = tran;
+                result = cmd.ExecuteNonQuery();
+
+                if (result == 0)
+                {
+                    tran.Rollback();    //交易取消
+                }
+                else
+                {
+                    tran.Commit();      //執行交易
+                    Search();
+                }
+
+                sqlConn.Close();
+
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+
+                //顯示新增的會員
+                sbSql.Clear();
+                sbSqlQuery.Clear();
+                sbSql.AppendFormat("SELECT TOP 10000 [ID],[Cname] AS '姓名',[Mobile1]  AS '手機',[Telphone]  AS '電話',[Email],[Address]  AS '住址',[Sex]  AS '性別',[Birthday]  AS '生日',[OldCardID]  AS '舊卡號',[OldLevel]  AS '舊會員等級' ,[NewCardID]  AS '新卡號' ,[NewLevel]  AS '新會員等級' FROM [TKFOODDB].[dbo].[Member] WHERE ID='{0}' ", list_Member[0].ID.ToString());
+
+                adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
+                sqlCmdBuilder = new SqlCommandBuilder(adapter);
+
+                sqlConn.Open();
+                dsMember.Clear();
+                adapter.Fill(dsMember, "TEMPdsMember");
+                sqlConn.Close();
+                label1.Text = dsMember.Tables["TEMPdsMember"].Rows.ToString();
+
+                if (dsMember.Tables["TEMPdsMember"].Rows.Count == 0)
+                {
+                    label1.Text = "0 find nothing";
+                }
+                else
+                {
+                    label1.Text = dsMember.Tables["TEMPdsMember"].Rows.Count.ToString();
+
+                    dataGridView1.DataSource = dsMember.Tables["TEMPdsMember"];
+                }
+            }
+            catch
+            {
+
+            }
+
+            finally
+            {
+                sqlConn.Close();
+            }
+        }
+
         #endregion
 
         #region GRIDVIEW
@@ -284,13 +356,13 @@ namespace TKMEMBERCHECK
             connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
             sqlConn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand(@"SELECT( CASE WHEN ISNULL(MAX(NewCardID),'')='' THEN '6110000000' ELSE  MAX(NewCardID)  END) AS NewCardID FROM Member WITH (NOLOCK) WHERE NewCardID LIKE '611%' AND NewCardID>='6110000000' ", sqlConn);
-
+            sqlConn.Close();
             sqlConn.Open();
             adapter = new SqlDataAdapter(cmd);
             dsNewCardID.Clear();
             adapter.Fill(dsNewCardID);
 
-            newid = dsNewCardID.Tables[0].Rows[0][0].ToString();
+            newid = dsNewCardID.Tables[0].Rows[0]["NewCardID"].ToString();
             countid = Convert.ToInt16(newid.Substring(3,7));
             countid = countid + 1;
             newid = countid.ToString().PadLeft(7, '0');        
@@ -298,7 +370,6 @@ namespace TKMEMBERCHECK
             textBox17.Text = newid.ToString();
             comboBox3.Text = textBox19.Text;
 
-            sqlConn.Close();
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -308,6 +379,34 @@ namespace TKMEMBERCHECK
 
             MemberUpdate();
         }
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(textBox2.Text.ToString())&& !string.IsNullOrEmpty(textBox3.Text.ToString())&& !string.IsNullOrEmpty(textBox4.Text.ToString()) && !string.IsNullOrEmpty(textBox9.Text.ToString()) && !string.IsNullOrEmpty(textBox7.Text.ToString()) && !string.IsNullOrEmpty(comboBox1.Text.ToString()) && !string.IsNullOrEmpty(dateTimePicker1.Value.ToShortDateString()))
+            {
+                string newid;
+                int countid;
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+                SqlCommand cmd = new SqlCommand(@"SELECT( CASE WHEN ISNULL(MAX(ID),'')='' THEN '0000000000' ELSE  MAX(ID)  END) AS ID  FROM Member WITH (NOLOCK) ", sqlConn);
+
+                sqlConn.Open();
+                adapter = new SqlDataAdapter(cmd);
+                dsNewCardID.Clear();
+                adapter.Fill(dsNewCardID);
+
+                newid = dsNewCardID.Tables[0].Rows[0][0].ToString();
+                countid = Convert.ToInt16(newid.Substring(3, 7));
+                countid = countid + 1;
+                newid = countid.ToString().PadLeft(10, '0');
+                list_Member.Clear();
+                list_Member.Add(new Member() { ID = newid.ToString(), Cname = textBox2.Text.ToString(), Mobile1 = textBox3.Text.ToString(), Telphone = textBox4.Text.ToString(), Email = textBox9.Text.ToString(), Address = textBox7.Text.ToString(), Sex = comboBox1.Text.ToString(), Birthday = dateTimePicker1.Value.ToShortDateString(), IsUpdate = "Y" });
+
+                MemberAdd();
+            }
+           
+        }
+
+
         #endregion
 
 

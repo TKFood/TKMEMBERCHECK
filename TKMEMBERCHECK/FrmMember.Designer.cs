@@ -60,6 +60,7 @@
             this.textBox19 = new System.Windows.Forms.TextBox();
             this.label28 = new System.Windows.Forms.Label();
             this.textBox20 = new System.Windows.Forms.TextBox();
+            this.button3 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -74,8 +75,8 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 185F));
             this.tableLayoutPanel1.Controls.Add(this.dataGridView1, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.textBox2, 1, 6);
@@ -108,6 +109,7 @@
             this.tableLayoutPanel1.Controls.Add(this.textBox19, 3, 5);
             this.tableLayoutPanel1.Controls.Add(this.label28, 6, 5);
             this.tableLayoutPanel1.Controls.Add(this.textBox20, 7, 5);
+            this.tableLayoutPanel1.Controls.Add(this.button3, 6, 9);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -1205,7 +1207,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(127, 61);
             this.button2.TabIndex = 20;
-            this.button2.Text = "更新資料";
+            this.button2.Text = "更新會員";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -1276,9 +1278,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(633, 40);
+            this.label2.Location = new System.Drawing.Point(643, 40);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(84, 40);
+            this.label2.Size = new System.Drawing.Size(74, 40);
             this.label2.TabIndex = 6;
             this.label2.Text = "資料筆數:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1388,7 +1390,7 @@
             this.label28.ForeColor = System.Drawing.Color.DarkRed;
             this.label28.Location = new System.Drawing.Point(543, 200);
             this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(84, 40);
+            this.label28.Size = new System.Drawing.Size(94, 40);
             this.label28.TabIndex = 29;
             this.label28.Text = "新會員等級";
             this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1398,11 +1400,23 @@
             this.textBox20.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox20.Location = new System.Drawing.Point(633, 203);
+            this.textBox20.Location = new System.Drawing.Point(643, 203);
             this.textBox20.Name = "textBox20";
             this.textBox20.ReadOnly = true;
-            this.textBox20.Size = new System.Drawing.Size(84, 22);
+            this.textBox20.Size = new System.Drawing.Size(74, 22);
             this.textBox20.TabIndex = 30;
+            // 
+            // button3
+            // 
+            this.button3.Font = new System.Drawing.Font("新細明體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.button3.ForeColor = System.Drawing.Color.DarkRed;
+            this.button3.Location = new System.Drawing.Point(543, 363);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(93, 61);
+            this.button3.TabIndex = 31;
+            this.button3.Text = "新增會員";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // FrmMember
             // 
@@ -1453,5 +1467,6 @@
         private System.Windows.Forms.TextBox textBox19;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.TextBox textBox20;
+        private System.Windows.Forms.Button button3;
     }
 }

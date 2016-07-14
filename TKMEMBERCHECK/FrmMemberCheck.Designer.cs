@@ -64,6 +64,7 @@
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -78,8 +79,8 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 96F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 84F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 74F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 185F));
             this.tableLayoutPanel1.Controls.Add(this.dataGridView1, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.textBox2, 1, 6);
@@ -114,8 +115,9 @@
             this.tableLayoutPanel1.Controls.Add(this.label13, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.comboBox2, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.comboBox3, 7, 5);
-            this.tableLayoutPanel1.Controls.Add(this.button3, 5, 0);
-            this.tableLayoutPanel1.Controls.Add(this.button4, 6, 0);
+            this.tableLayoutPanel1.Controls.Add(this.button3, 5, 1);
+            this.tableLayoutPanel1.Controls.Add(this.button4, 6, 1);
+            this.tableLayoutPanel1.Controls.Add(this.button5, 6, 9);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -1200,7 +1202,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(127, 37);
             this.button2.TabIndex = 20;
-            this.button2.Text = "更新資料";
+            this.button2.Text = "更新會員";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -1271,9 +1273,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(633, 40);
+            this.label2.Location = new System.Drawing.Point(649, 40);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(84, 40);
+            this.label2.Size = new System.Drawing.Size(68, 40);
             this.label2.TabIndex = 6;
             this.label2.Text = "資料筆數:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1369,7 +1371,7 @@
             this.label28.ForeColor = System.Drawing.Color.DarkRed;
             this.label28.Location = new System.Drawing.Point(549, 200);
             this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(78, 40);
+            this.label28.Size = new System.Drawing.Size(94, 40);
             this.label28.TabIndex = 29;
             this.label28.Text = "新會員等級";
             this.label28.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1434,16 +1436,16 @@
             "白金卡",
             "金卡",
             "銀卡"});
-            this.comboBox3.Location = new System.Drawing.Point(633, 203);
+            this.comboBox3.Location = new System.Drawing.Point(649, 203);
             this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(84, 20);
+            this.comboBox3.Size = new System.Drawing.Size(68, 20);
             this.comboBox3.TabIndex = 33;
             this.comboBox3.Text = "未核準";
             // 
             // button3
             // 
             this.button3.ForeColor = System.Drawing.Color.Blue;
-            this.button3.Location = new System.Drawing.Point(453, 3);
+            this.button3.Location = new System.Drawing.Point(453, 43);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(90, 34);
             this.button3.TabIndex = 34;
@@ -1455,13 +1457,25 @@
             // 
             this.button4.Font = new System.Drawing.Font("新細明體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.button4.ForeColor = System.Drawing.Color.DarkRed;
-            this.button4.Location = new System.Drawing.Point(549, 3);
+            this.button4.Location = new System.Drawing.Point(549, 43);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(78, 34);
             this.button4.TabIndex = 35;
             this.button4.Text = "核準";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button5
+            // 
+            this.button5.Font = new System.Drawing.Font("新細明體", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.button5.ForeColor = System.Drawing.Color.DarkRed;
+            this.button5.Location = new System.Drawing.Point(549, 363);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(93, 37);
+            this.button5.TabIndex = 36;
+            this.button5.Text = "新增會員";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // FrmMemberCheck
             // 
@@ -1516,5 +1530,6 @@
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
     }
 }
