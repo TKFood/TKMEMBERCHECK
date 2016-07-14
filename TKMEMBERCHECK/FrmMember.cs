@@ -4,6 +4,8 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Configuration;
+using System.Reflection;
 
 namespace TKMEMBERCHECK
 {
@@ -12,6 +14,7 @@ namespace TKMEMBERCHECK
 
         SqlConnection sqlConn = new SqlConnection();
         SqlCommand sqlComm = new SqlCommand();
+        string connectionString;
         StringBuilder sbSql = new StringBuilder();
         StringBuilder sbSqlQuery = new StringBuilder();
         SqlDataAdapter adapter = new SqlDataAdapter();
@@ -38,6 +41,7 @@ namespace TKMEMBERCHECK
             public string Birthday { set; get; }
             public string NewCardID { set; get; }
             public string NewLevel { set; get; }
+            public string IsUpdate { set; get; }
         }
 
         List<Member> list_Member = new List<Member>();
@@ -54,7 +58,9 @@ namespace TKMEMBERCHECK
 
                 if (!string.IsNullOrEmpty(textBox1.Text.ToString()) || !string.IsNullOrEmpty(textBox5.Text.ToString()))
                 {
-                    sqlConn = new SqlConnection("server=192.168.1.102;database=TKFOODDB;uid=sa;pwd=chi");
+                    connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                    sqlConn = new SqlConnection(connectionString);
+
                     sbSql.Clear();
                     sbSqlQuery.Clear();
 
@@ -127,7 +133,8 @@ namespace TKMEMBERCHECK
         {
             try
             {
-                sqlConn = new SqlConnection("server=192.168.1.102;database=TKFOODDB;uid=sa;pwd=chi");
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
 
                 sqlConn.Close();
                 sqlConn.Open();
@@ -136,7 +143,7 @@ namespace TKMEMBERCHECK
                 sbSql.Clear();
                 //sbSql.Append("UPDATE Member SET Cname='009999',Mobile1='009999',Telphone='',Email='',Address='',Sex='',Birthday='' WHERE ID='009999'");
 
-                sbSql.AppendFormat("  UPDATE Member SET Cname='{1}',Mobile1='{2}',Telphone='{3}',Email='{4}',Address='{5}',Sex='{6}',Birthday='{7}' WHERE ID='{0}' ", list_Member[0].ID.ToString(), list_Member[0].Cname.ToString(), list_Member[0].Mobile1.ToString(), list_Member[0].Telphone.ToString(), list_Member[0].Email.ToString(), list_Member[0].Address.ToString(), list_Member[0].Sex.ToString(), list_Member[0].Birthday.ToString());
+                sbSql.AppendFormat("  UPDATE Member SET Cname='{1}',Mobile1='{2}',Telphone='{3}',Email='{4}',Address='{5}',Sex='{6}',Birthday='{7}',IsUpdate='{8}' WHERE ID='{0}' ", list_Member[0].ID.ToString(), list_Member[0].Cname.ToString(), list_Member[0].Mobile1.ToString(), list_Member[0].Telphone.ToString(), list_Member[0].Email.ToString(), list_Member[0].Address.ToString(), list_Member[0].Sex.ToString(), list_Member[0].Birthday.ToString(), list_Member[0].IsUpdate.ToString());
                 //sbSql.AppendFormat("  UPDATE Member SET Cname='{1}',Mobile1='{2}' WHERE ID='{0}' ", list_Member[0].ID.ToString(), list_Member[0].Cname.ToString(), list_Member[0].Mobile1.ToString());
 
                 cmd.Connection = sqlConn;
@@ -223,7 +230,7 @@ namespace TKMEMBERCHECK
         private void button2_Click(object sender, EventArgs e)
         {
             list_Member.Clear();
-            list_Member.Add(new Member() { ID = dataGridView1.CurrentRow.Cells[0].Value.ToString(), Cname = textBox2.Text.ToString(), Mobile1 = textBox3.Text.ToString(), Telphone = textBox4.Text.ToString(), Email = textBox9.Text.ToString(), Address = textBox7.Text.ToString(), Sex = comboBox1.Text.ToString(), Birthday = dateTimePicker1.Value.ToShortDateString() });
+            list_Member.Add(new Member() { ID = dataGridView1.CurrentRow.Cells[0].Value.ToString(), Cname = textBox2.Text.ToString(), Mobile1 = textBox3.Text.ToString(), Telphone = textBox4.Text.ToString(), Email = textBox9.Text.ToString(), Address = textBox7.Text.ToString(), Sex = comboBox1.Text.ToString(), Birthday = dateTimePicker1.Value.ToShortDateString(), IsUpdate="Y" });
 
             MemberUpdate();
         }

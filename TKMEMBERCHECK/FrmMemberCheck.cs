@@ -4,6 +4,8 @@ using System.Windows.Forms;
 using System.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Reflection;
 
 namespace TKMEMBERCHECK
 {
@@ -11,6 +13,7 @@ namespace TKMEMBERCHECK
     {
         SqlConnection sqlConn = new SqlConnection();
         SqlCommand sqlComm = new SqlCommand();
+        string connectionString;
         StringBuilder sbSql = new StringBuilder();
         StringBuilder sbSqlQuery = new StringBuilder();
         SqlDataAdapter adapter = new SqlDataAdapter();
@@ -18,6 +21,7 @@ namespace TKMEMBERCHECK
         SqlTransaction tran;
         SqlCommand cmd = new SqlCommand();
         DataSet dsMember = new DataSet();
+        DataSet dsNewCardID = new DataSet();
         int result;
 
         public FrmMemberCheck()
@@ -37,6 +41,7 @@ namespace TKMEMBERCHECK
             public string Birthday { set; get; }
             public string NewCardID { set; get; }
             public string NewLevel { set; get; }
+            public string IsUpdate { set; get; }
         }
 
         List<Member> list_Member = new List<Member>();
@@ -62,7 +67,8 @@ namespace TKMEMBERCHECK
 
                 if (!string.IsNullOrEmpty(textBox1.Text.ToString()) || !string.IsNullOrEmpty(textBox5.Text.ToString()) || !string.IsNullOrEmpty(comboBox2.Text.ToString()))
                 {
-                    sqlConn = new SqlConnection("server=192.168.1.102;database=TKFOODDB;uid=sa;pwd=chi");
+                    connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                    sqlConn = new SqlConnection(connectionString);
                     sbSql.Clear();
                     sbSqlQuery.Clear();
 
@@ -102,6 +108,8 @@ namespace TKMEMBERCHECK
                             {
                                 sbSqlQuery.Append(" AND  ISNULL(NewCardID,'')='' ");
                             }
+
+                            sbSqlQuery.Append(" AND  IsUpdate='Y' ");
                         }
                         else if (comboBox2.Text.ToString().Equals("已核準"))
                         {
@@ -113,6 +121,8 @@ namespace TKMEMBERCHECK
                             {
                                 sbSqlQuery.Append(" AND  ISNULL(NewCardID,'')<>'' ");
                             }
+
+                            sbSqlQuery.Append(" AND  IsUpdate='Y' ");
                         }
                         else if (comboBox2.Text.ToString().Equals("全部"))
                         {
@@ -120,7 +130,7 @@ namespace TKMEMBERCHECK
                         }
                     }
 
-                        sbSql.AppendFormat("SELECT TOP 10000 [ID],[Cname] AS '姓名',[Mobile1]  AS '手機',[Telphone]  AS '電話',[Email],[Address]  AS '住址',[Sex]  AS '性別',[Birthday]  AS '生日',[OldCardID]  AS '舊卡號',[OldLevel]  AS '舊會員等級' ,[NewCardID]  AS '新卡號' ,[NewLevel]  AS '新會員等級' FROM [TKFOODDB].[dbo].[Member] WHERE {0} ", sbSqlQuery.ToString());
+                        sbSql.AppendFormat("SELECT TOP 10000 [ID],[Cname] AS '姓名',[Mobile1]  AS '手機',[Telphone]  AS '電話',[Email],[Address]  AS '住址',[Sex]  AS '性別',[Birthday]  AS '生日',[OldCardID]  AS '舊卡號',[OldLevel]  AS '舊會員等級' ,[NewCardID]  AS '新卡號' ,[NewLevel]  AS '新會員等級' FROM [TKFOODDB].[dbo].[Member] WHERE  {0} ", sbSqlQuery.ToString());
 
                     adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
                     sqlCmdBuilder = new SqlCommandBuilder(adapter);
@@ -164,7 +174,8 @@ namespace TKMEMBERCHECK
         {
             try
             {
-                sqlConn = new SqlConnection("server=192.168.1.102;database=TKFOODDB;uid=sa;pwd=chi");
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
 
                 sqlConn.Close();
                 sqlConn.Open();
@@ -173,7 +184,7 @@ namespace TKMEMBERCHECK
                 sbSql.Clear();
                 //sbSql.Append("UPDATE Member SET Cname='009999',Mobile1='009999',Telphone='',Email='',Address='',Sex='',Birthday='' WHERE ID='009999'");
 
-                sbSql.AppendFormat("  UPDATE Member SET Cname='{1}',Mobile1='{2}',Telphone='{3}',Email='{4}',Address='{5}',Sex='{6}',Birthday='{7}',NewCardID='{8}',NewLevel='{9}' WHERE ID='{0}' ", list_Member[0].ID.ToString(), list_Member[0].Cname.ToString(), list_Member[0].Mobile1.ToString(), list_Member[0].Telphone.ToString(), list_Member[0].Email.ToString(), list_Member[0].Address.ToString(), list_Member[0].Sex.ToString(), list_Member[0].Birthday.ToString(), list_Member[0].NewCardID.ToString(), list_Member[0].NewLevel.ToString());
+                sbSql.AppendFormat("  UPDATE Member SET Cname='{1}',Mobile1='{2}',Telphone='{3}',Email='{4}',Address='{5}',Sex='{6}',Birthday='{7}',IsUpdate='{8}',NewCardID='{9}',NewLevel='{10}' WHERE ID='{0}' ", list_Member[0].ID.ToString(), list_Member[0].Cname.ToString(), list_Member[0].Mobile1.ToString(), list_Member[0].Telphone.ToString(), list_Member[0].Email.ToString(), list_Member[0].Address.ToString(), list_Member[0].Sex.ToString(), list_Member[0].Birthday.ToString(), list_Member[0].IsUpdate.ToString(), list_Member[0].NewCardID.ToString(), list_Member[0].NewLevel.ToString());
                 //sbSql.AppendFormat("  UPDATE Member SET Cname='{1}',Mobile1='{2}' WHERE ID='{0}' ", list_Member[0].ID.ToString(), list_Member[0].Cname.ToString(), list_Member[0].Mobile1.ToString());
 
                 cmd.Connection = sqlConn;
@@ -260,19 +271,41 @@ namespace TKMEMBERCHECK
         private void button2_Click(object sender, EventArgs e)
         {
             list_Member.Clear();
-            list_Member.Add(new Member() { ID = dataGridView1.CurrentRow.Cells[0].Value.ToString(), Cname = textBox2.Text.ToString(), Mobile1 = textBox3.Text.ToString(), Telphone = textBox4.Text.ToString(), Email = textBox9.Text.ToString(), Address = textBox7.Text.ToString(), Sex = comboBox1.Text.ToString(), Birthday = dateTimePicker1.Value.ToShortDateString() , NewCardID = textBox17 .Text.ToString(),NewLevel=comboBox3.Text.ToString()});
+            list_Member.Add(new Member() { ID = dataGridView1.CurrentRow.Cells[0].Value.ToString(), Cname = textBox2.Text.ToString(), Mobile1 = textBox3.Text.ToString(), Telphone = textBox4.Text.ToString(), Email = textBox9.Text.ToString(), Address = textBox7.Text.ToString(), Sex = comboBox1.Text.ToString(), Birthday = dateTimePicker1.Value.ToShortDateString(), IsUpdate = "Y" });
 
             MemberUpdate();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            textBox17.Text = "111";
+            //會員編號10碼，611開頭，7位流水號
+            string newid;
+            int countid;
+            connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+            sqlConn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand(@"SELECT( CASE WHEN ISNULL(MAX(NewCardID),'')='' THEN '6110000000' ELSE  MAX(NewCardID)  END) AS NewCardID FROM Member WITH (NOLOCK) WHERE NewCardID LIKE '611%' AND NewCardID>='6110000000' ", sqlConn);
+
+            sqlConn.Open();
+            adapter = new SqlDataAdapter(cmd);
+            dsNewCardID.Clear();
+            adapter.Fill(dsNewCardID);
+
+            newid = dsNewCardID.Tables[0].Rows[0][0].ToString();
+            countid = Convert.ToInt16(newid.Substring(3,7));
+            countid = countid + 1;
+            newid = countid.ToString().PadLeft(7, '0');        
+            newid = "611" + newid;
+            textBox17.Text = newid.ToString();
             comboBox3.Text = textBox19.Text;
+
+            sqlConn.Close();
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
+            list_Member.Clear();
+            list_Member.Add(new Member() { ID = dataGridView1.CurrentRow.Cells[0].Value.ToString(), Cname = textBox2.Text.ToString(), Mobile1 = textBox3.Text.ToString(), Telphone = textBox4.Text.ToString(), Email = textBox9.Text.ToString(), Address = textBox7.Text.ToString(), Sex = comboBox1.Text.ToString(), Birthday = dateTimePicker1.Value.ToShortDateString(), IsUpdate = "Y", NewCardID= textBox17.Text.ToString(), NewLevel= comboBox3.Text.ToString() });
+
             MemberUpdate();
         }
         #endregion
