@@ -309,25 +309,28 @@ namespace TKMEMBERCHECK
         }
         private void button3_Click(object sender, EventArgs e)
         {
-            string newid;
-            int countid;
-            connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
-            sqlConn = new SqlConnection(connectionString);
-            SqlCommand cmd = new SqlCommand(@"SELECT( CASE WHEN ISNULL(MAX(ID),'')='' THEN '0000000000' ELSE  MAX(ID)  END) AS ID  FROM Member WITH (NOLOCK) ", sqlConn);
+            if (!string.IsNullOrEmpty(textBox2.Text.ToString()) && !string.IsNullOrEmpty(textBox3.Text.ToString()) && !string.IsNullOrEmpty(textBox4.Text.ToString()) && !string.IsNullOrEmpty(textBox9.Text.ToString()) && !string.IsNullOrEmpty(textBox7.Text.ToString()) && !string.IsNullOrEmpty(comboBox1.Text.ToString()) && !string.IsNullOrEmpty(dateTimePicker1.Value.ToShortDateString()))
+            {
+                string newid;
+                int countid;
+                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                sqlConn = new SqlConnection(connectionString);
+                SqlCommand cmd = new SqlCommand(@"SELECT( CASE WHEN ISNULL(MAX(ID),'')='' THEN '0000000000' ELSE  MAX(ID)  END) AS ID  FROM Member WITH (NOLOCK) ", sqlConn);
 
-            sqlConn.Open();
-            adapter = new SqlDataAdapter(cmd);
-            dsNewCardID.Clear();
-            adapter.Fill(dsNewCardID);
+                sqlConn.Open();
+                adapter = new SqlDataAdapter(cmd);
+                dsNewCardID.Clear();
+                adapter.Fill(dsNewCardID);
 
-            newid = dsNewCardID.Tables[0].Rows[0][0].ToString();
-            countid = Convert.ToInt16(newid.Substring(3, 7));
-            countid = countid + 1;
-            newid = countid.ToString().PadLeft(10, '0');
-            list_Member.Clear();
-            list_Member.Add(new Member() { ID = newid.ToString(), Cname = textBox2.Text.ToString(), Mobile1 = textBox3.Text.ToString(), Telphone = textBox4.Text.ToString(), Email = textBox9.Text.ToString(), Address = textBox7.Text.ToString(), Sex = comboBox1.Text.ToString(), Birthday = dateTimePicker1.Value.ToShortDateString(), IsUpdate = "Y" });
+                newid = dsNewCardID.Tables[0].Rows[0][0].ToString();
+                countid = Convert.ToInt16(newid.Substring(3, 7));
+                countid = countid + 1;
+                newid = countid.ToString().PadLeft(10, '0');
+                list_Member.Clear();
+                list_Member.Add(new Member() { ID = newid.ToString(), Cname = textBox2.Text.ToString(), Mobile1 = textBox3.Text.ToString(), Telphone = textBox4.Text.ToString(), Email = textBox9.Text.ToString(), Address = textBox7.Text.ToString(), Sex = comboBox1.Text.ToString(), Birthday = dateTimePicker1.Value.ToShortDateString(), IsUpdate = "Y" });
 
-            MemberAdd();
+                MemberAdd();
+            }
         }
 
         #endregion
