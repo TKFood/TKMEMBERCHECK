@@ -34,7 +34,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(853, 429);
+            this.ClientSize = new System.Drawing.Size(984, 761);
             this.Name = "FrmParent";
             this.Text = "FrmParent";
             this.Load += new System.EventHandler(this.FrmParent_Load);

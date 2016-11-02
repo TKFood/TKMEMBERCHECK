@@ -24,6 +24,8 @@ namespace TKMEMBERCHECK
         DataSet dsMember = new DataSet();
         DataSet dsNewCardID = new DataSet();
         int result;
+        string ADDORUPDATE=null;
+        DataGridViewRow drMEMBER = new DataGridViewRow();
 
         public FrmMember()
         {
@@ -88,7 +90,7 @@ namespace TKMEMBERCHECK
 
                     }
 
-                    sbSql.AppendFormat("SELECT TOP 10000 [ID],[Cname] AS '姓名',[Mobile1]  AS '手機',[Telphone]  AS '電話',[Email],[Address]  AS '住址',[Sex]  AS '性別',[Birthday]  AS '生日',[OldCardID]  AS '舊卡號',[OldLevel]  AS '舊會員等級' ,[NewCardID]  AS '新卡號' ,[NewLevel]  AS '新會員等級' FROM [TKFOODDB].[dbo].[Member] WHERE {0} ", sbSqlQuery.ToString());
+                    sbSql.AppendFormat("SELECT TOP 10000 [ID],[Cname] AS '姓名',[Mobile1]  AS '手機',[Telphone]  AS '電話',[Email],[Address]  AS '住址',[Sex]  AS '性別',[Birthday]  AS '生日',[OldCardID]  AS '舊卡號',[OldLevel]  AS '舊會員等級' ,[NewCardID]  AS '新卡號' ,[NewLevel]  AS '新會員等級' FROM [TKMEMBER].[dbo].[Member] WHERE {0} ", sbSqlQuery.ToString());
 
                     adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
                     sqlCmdBuilder = new SqlCommandBuilder(adapter);
@@ -215,7 +217,7 @@ namespace TKMEMBERCHECK
                 //顯示新增的會員
                 sbSql.Clear();
                 sbSqlQuery.Clear();
-                sbSql.AppendFormat("SELECT TOP 10000 [ID],[Cname] AS '姓名',[Mobile1]  AS '手機',[Telphone]  AS '電話',[Email],[Address]  AS '住址',[Sex]  AS '性別',[Birthday]  AS '生日',[OldCardID]  AS '舊卡號',[OldLevel]  AS '舊會員等級' ,[NewCardID]  AS '新卡號' ,[NewLevel]  AS '新會員等級' FROM [TKFOODDB].[dbo].[Member] WHERE ID='{0}' ", list_Member[0].ID.ToString());
+                sbSql.AppendFormat("SELECT [ID],[Cname] AS '姓名',[Mobile1]  AS '手機',[Telphone]  AS '電話',[Email],[Address]  AS '住址',[Sex]  AS '性別',[Birthday]  AS '生日',[OldCardID]  AS '舊卡號',[OldLevel]  AS '舊會員等級' ,[NewCardID]  AS '新卡號' ,[NewLevel]  AS '新會員等級' FROM [TKMEMBER].[dbo].[Member] WHERE ID='{0}' ", list_Member[0].ID.ToString());
 
                 adapter = new SqlDataAdapter(@"" + sbSql, sqlConn);
                 sqlCmdBuilder = new SqlCommandBuilder(adapter);
@@ -256,27 +258,28 @@ namespace TKMEMBERCHECK
         {
             if (dsMember.Tables["TEMPdsMember"].Rows.Count >= 1)
             {
-                textBox2.Text = dataGridView1.CurrentRow.Cells[1].Value.ToString();
-                textBox3.Text = dataGridView1.CurrentRow.Cells[2].Value.ToString();
-                textBox4.Text = dataGridView1.CurrentRow.Cells[3].Value.ToString();
-                textBox9.Text = dataGridView1.CurrentRow.Cells[4].Value.ToString();
-                textBox7.Text = dataGridView1.CurrentRow.Cells[5].Value.ToString();
-                textBox8.Text = dataGridView1.CurrentRow.Cells[8].Value.ToString();
-                textBox19.Text = dataGridView1.CurrentRow.Cells[9].Value.ToString();
-                textBox17.Text = dataGridView1.CurrentRow.Cells[10].Value.ToString();
-                textBox20.Text = dataGridView1.CurrentRow.Cells[11].Value.ToString();
+                drMEMBER = dataGridView1.Rows[dataGridView1.SelectedCells[0].RowIndex];
+                textBox2.Text = drMEMBER.Cells["姓名"].Value.ToString();
+                textBox3.Text = drMEMBER.Cells["手機"].Value.ToString();
+                textBox4.Text = drMEMBER.Cells["電話"].Value.ToString();
+                textBox9.Text = drMEMBER.Cells["Email"].Value.ToString();
+                textBox7.Text = drMEMBER.Cells["住址"].Value.ToString();
+                textBox8.Text = drMEMBER.Cells["舊卡號"].Value.ToString();
+                textBox19.Text = drMEMBER.Cells["舊會員等級"].Value.ToString();
+                textBox17.Text = drMEMBER.Cells["新卡號"].Value.ToString();
+                textBox20.Text = drMEMBER.Cells["新會員等級"].Value.ToString();
 
-                if (!string.IsNullOrEmpty(dataGridView1.CurrentRow.Cells[6].Value.ToString()) && dataGridView1.CurrentRow.Cells[6].Value.ToString().Equals("女"))
+                if (!string.IsNullOrEmpty(drMEMBER.Cells["性別"].Value.ToString()) && drMEMBER.Cells["性別"].Value.ToString().Equals("女"))
                 {
                     comboBox1.Text = "女";
                 }
-                else if (!string.IsNullOrEmpty(dataGridView1.CurrentRow.Cells[6].Value.ToString()) && dataGridView1.CurrentRow.Cells[6].Value.ToString().Equals("男"))
+                else if (!string.IsNullOrEmpty(drMEMBER.Cells["性別"].Value.ToString()) && drMEMBER.Cells["性別"].Value.ToString().Equals("男"))
                 {
                     comboBox1.Text = "男";
                 }
-                if (!string.IsNullOrEmpty(dataGridView1.CurrentRow.Cells[7].Value.ToString()))
+                if (!string.IsNullOrEmpty(drMEMBER.Cells["生日"].Value.ToString()))
                 {
-                    dateTimePicker1.Value = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[7].Value.ToString());
+                    dateTimePicker1.Value = Convert.ToDateTime(drMEMBER.Cells["生日"].Value.ToString());
                 }
                 else
                 {
@@ -291,7 +294,19 @@ namespace TKMEMBERCHECK
             }
 
         }
-
+        public void SETADD()
+        {
+            textBox2.Text = null;
+            textBox3.Text = null;
+            textBox4.Text = null;
+            textBox9.Text = null;
+            textBox7.Text = null;
+            textBox8.Text = null;
+            textBox19.Text = null;
+            textBox17.Text = null;
+            textBox20.Text = null;
+            dateTimePicker1.Value = DateTime.Now;
+        }
         #endregion
 
         #region BUTTON
@@ -302,35 +317,57 @@ namespace TKMEMBERCHECK
 
         private void button2_Click(object sender, EventArgs e)
         {
-            list_Member.Clear();
-            list_Member.Add(new Member() { ID = dataGridView1.CurrentRow.Cells[0].Value.ToString(), Cname = textBox2.Text.ToString(), Mobile1 = textBox3.Text.ToString(), Telphone = textBox4.Text.ToString(), Email = textBox9.Text.ToString(), Address = textBox7.Text.ToString(), Sex = comboBox1.Text.ToString(), Birthday = dateTimePicker1.Value.ToShortDateString(), IsUpdate="Y" });
-
-            MemberUpdate();
+            ADDORUPDATE = "UPDATE";
+            button4.Visible = true;
         }
         private void button3_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(textBox2.Text.ToString()) && !string.IsNullOrEmpty(textBox3.Text.ToString()) && !string.IsNullOrEmpty(textBox4.Text.ToString()) && !string.IsNullOrEmpty(textBox9.Text.ToString()) && !string.IsNullOrEmpty(textBox7.Text.ToString()) && !string.IsNullOrEmpty(comboBox1.Text.ToString()) && !string.IsNullOrEmpty(dateTimePicker1.Value.ToShortDateString()))
+            ADDORUPDATE = "ADD";
+            SETADD();
+            button4.Visible = true;
+        }
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if(ADDORUPDATE!=null)
             {
-                string newid;
-                int countid;
-                connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
-                sqlConn = new SqlConnection(connectionString);
-                SqlCommand cmd = new SqlCommand(@"SELECT( CASE WHEN ISNULL(MAX(ID),'')='' THEN '0000000000' ELSE  MAX(ID)  END) AS ID  FROM Member WITH (NOLOCK) ", sqlConn);
+                if (ADDORUPDATE.Equals("ADD"))
+                {
+                    if (!string.IsNullOrEmpty(textBox2.Text.ToString()) && !string.IsNullOrEmpty(textBox3.Text.ToString()) && !string.IsNullOrEmpty(textBox4.Text.ToString()) && !string.IsNullOrEmpty(textBox9.Text.ToString()) && !string.IsNullOrEmpty(textBox7.Text.ToString()) && !string.IsNullOrEmpty(comboBox1.Text.ToString()) && !string.IsNullOrEmpty(dateTimePicker1.Value.ToShortDateString()))
+                    {
+                        string newid;
+                        int countid;
+                        connectionString = ConfigurationManager.ConnectionStrings["dbconn"].ConnectionString;
+                        sqlConn = new SqlConnection(connectionString);
+                        SqlCommand cmd = new SqlCommand(@"SELECT( CASE WHEN ISNULL(MAX(ID),'')='' THEN '0000000000' ELSE  MAX(ID)  END) AS ID  FROM Member WITH (NOLOCK) ", sqlConn);
 
-                sqlConn.Open();
-                adapter = new SqlDataAdapter(cmd);
-                dsNewCardID.Clear();
-                adapter.Fill(dsNewCardID);
+                        sqlConn.Open();
+                        adapter = new SqlDataAdapter(cmd);
+                        dsNewCardID.Clear();
+                        adapter.Fill(dsNewCardID);
 
-                newid = dsNewCardID.Tables[0].Rows[0][0].ToString();
-                countid = Convert.ToInt16(newid.Substring(3, 7));
-                countid = countid + 1;
-                newid = countid.ToString().PadLeft(10, '0');
-                list_Member.Clear();
-                list_Member.Add(new Member() { ID = newid.ToString(), Cname = textBox2.Text.ToString(), Mobile1 = textBox3.Text.ToString(), Telphone = textBox4.Text.ToString(), Email = textBox9.Text.ToString(), Address = textBox7.Text.ToString(), Sex = comboBox1.Text.ToString(), Birthday = dateTimePicker1.Value.ToShortDateString(), IsUpdate = "Y" });
+                        newid = dsNewCardID.Tables[0].Rows[0][0].ToString();
+                        countid = Convert.ToInt16(newid.Substring(3, 7));
+                        countid = countid + 1;
+                        newid = countid.ToString().PadLeft(10, '0');
+                        list_Member.Clear();
+                        list_Member.Add(new Member() { ID = newid.ToString(), Cname = textBox2.Text.ToString(), Mobile1 = textBox3.Text.ToString(), Telphone = textBox4.Text.ToString(), Email = textBox9.Text.ToString(), Address = textBox7.Text.ToString(), Sex = comboBox1.Text.ToString(), Birthday = dateTimePicker1.Value.ToShortDateString(), IsUpdate = "Y" });
 
-                MemberAdd();
+                        MemberAdd();
+                    }
+                   
+                }
+                else if (ADDORUPDATE.Equals("UPDATE"))
+                {
+                    list_Member.Clear();
+                    list_Member.Add(new Member() { ID = dataGridView1.CurrentRow.Cells[0].Value.ToString(), Cname = textBox2.Text.ToString(), Mobile1 = textBox3.Text.ToString(), Telphone = textBox4.Text.ToString(), Email = textBox9.Text.ToString(), Address = textBox7.Text.ToString(), Sex = comboBox1.Text.ToString(), Birthday = dateTimePicker1.Value.ToShortDateString(), IsUpdate = "Y" });
+
+                    MemberUpdate();
+                }
+
+                ADDORUPDATE = null;
             }
+            button4.Visible = false;
+
         }
 
         #endregion
